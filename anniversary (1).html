@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our 1 Year Anniversary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── VARIABLES ─── */
+    :root {
+      --deep: #ffffff;
+      --card: #faf8f6;
+      --rose: #c9616a;
+      --rose-glow: rgba(201, 97, 106, 0.25);
+      --gold: #b8895a;
+      --cream: #2a2a2a;
+      --text: #3d3d3d;
+      --text-dim: #8a8580;
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', serif;
+      background: var(--deep);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ─── FLOATING PARTICLES ─── */
+    .particles {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--rose);
+      opacity: 0;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-120px) scale(1); opacity: 0; }
+    }
+
+    /* ─── TITLE SCREEN ─── */
+    #title-screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: radial-gradient(ellipse at 50% 40%, rgba(201,97,106,0.08) 0%, transparent 70%);
+    }
+
+    .title-main {
+      font-family: 'Sour Gummy', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.15;
+      margin: 1rem 0;
+      opacity: 0;
+      animation: fadeSlideUp 1.2s cubic-bezier(.22,1,.36,1) 0.4s forwards;
+    }
+    .title-main em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .title-gif {
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.9s forwards;
+    }
+    .title-gif img {
+      max-width: 280px;
+      width: 85%;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    /* ─── CTA BUTTON ─── */
+    .cta-btn {
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 1.4s forwards;
+    }
+    .cta-btn button {
+      background: transparent;
+      border: 1px solid var(--rose);
+      color: var(--rose);
+      font-family: 'Nunito', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.8rem 2.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn button::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--rose);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      z-index: 0;
+    }
+    .cta-btn button:hover::before { transform: translateY(0); }
+    .cta-btn button span { position: relative; z-index: 1; }
+    .cta-btn button:hover { color: #fff; box-shadow: 0 0 30px var(--rose-glow); }
+
+    /* ─── MUSIC TOGGLE ─── */
+    .music-toggle {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 100;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(201,97,106,0.4);
+      color: var(--rose);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .music-toggle:hover {
+      border-color: var(--rose);
+      box-shadow: 0 0 20px var(--rose-glow);
+    }
+    .music-toggle.playing { animation: pulse-ring 2s ease infinite; }
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 var(--rose-glow), 0 4px 20px rgba(0,0,0,0.3); }
+      50%      { box-shadow: 0 0 0 8px transparent, 0 4px 20px rgba(0,0,0,0.3); }
+    }
+
+    /* ─── LETTER SECTION ─── */
+    #letter-section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 6rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .letter-container {
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .section-label {
+      text-align: center;
+      font-family: 'Nunito', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(.22,1,.36,1);
+    }
+    .section-label.visible { opacity: 1; transform: translateY(0); }
+
+    .letter-heading {
+      font-family: 'Sour Gummy', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: var(--cream);
+      text-align: center;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.9s cubic-bezier(.22,1,.36,1) 0.1s;
+    }
+    .letter-heading.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── LETTER CARD ─── */
+    .letter-card {
+      background: var(--card);
+      border: 1px solid rgba(201,97,106,0.15);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(0,0,0,0.04);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s cubic-bezier(.22,1,.36,1) 0.2s;
+    }
+    .letter-card.visible { opacity: 1; transform: translateY(0); }
+
+    /* corner decorations */
+    .letter-card::before, .letter-card::after {
+      content: '✦';
+      position: absolute;
+      color: var(--gold);
+      font-size: 0.7rem;
+      opacity: 0.5;
+    }
+    .letter-card::before { top: 1rem; left: 1.2rem; }
+    .letter-card::after  { bottom: 1rem; right: 1.2rem; }
+
+    .letter-greeting {
+      font-family: 'Sour Gummy', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-body p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 1.4rem;
+      font-weight: 300;
+    }
+
+    .inline-gif {
+      text-align: right;
+      margin: 1.8rem 0 0 0;
+    }
+    .inline-gif img {
+      max-width: 220px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .letter-closing {
+      font-family: 'Sour Gummy', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--rose);
+      margin-top: 2rem;
+    }
+
+    .letter-signature {
+      font-family: 'Sour Gummy', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-top: 0.4rem;
+    }
+
+    /* ─── GIF GALLERY ─── */
+    .gif-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .gif-frame {
+      background: var(--card);
+      border: 1px solid rgba(201,97,106,0.15);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.9s cubic-bezier(.22,1,.36,1);
+    }
+    .gif-frame.visible { opacity: 1; transform: translateY(0); }
+
+    .gif-frame img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .gif-caption {
+      text-align: center;
+      margin-top: 0.9rem;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-dim);
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      position: relative; z-index: 1;
+    }
+    .footer-heart {
+      color: var(--rose);
+      font-size: 1.4rem;
+      display: inline-block;
+      animation: heartbeat 1.4s ease infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15%      { transform: scale(1.2); }
+      30%      { transform: scale(1); }
+      45%      { transform: scale(1.1); }
+    }
+    .footer p {
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes fadeSlideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .title-main { transform: translateY(30px); }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0ece8; }
+    ::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- Floating Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ════════════════════════════════════════════
+     TITLE SCREEN
+     ════════════════════════════════════════════ -->
+<section id="title-screen">
+  <h1 class="title-main">Happy 1 Year<br/><em>Anniversary!</em></h1>
+
+  <!-- !! REPLACE src WITH YOUR GIF PATH !! -->
+  <div class="title-gif">
+    <img src="gomarose.gif" alt="Our gif" />
+  </div>
+
+  <div class="cta-btn">
+    <button onclick="scrollToLetter()">
+      <span>OPEN ME!</span>
+    </button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     LOVE LETTER + GIFS
+     ════════════════════════════════════════════ -->
+<section id="letter-section">
+  <div class="letter-container">
+
+    <!-- LETTER CARD -->
+    <div class="letter-card">
+      <!-- !! CHANGE THE GREETING NAME !! -->
+      <p class="letter-greeting">Dear Marissa,</p>
+
+      <!-- !! REPLACE THIS WITH YOUR OWN LETTER !! -->
+      <div class="letter-body">
+        <p>
+          To the most kind, pure hearted, loving and most special person ever.
+          Thank you for the most special year of my life. You're someone who taught
+          me true love and how it feels to be loved.
+        </p>
+
+        <p>
+          Being with you makes me want to become the best version of myself because
+          someone as amazing as you deserves that. You inspire me every single dat just
+          by being who you are, and I adore you more than words could ever say.
+        </p>
+
+        <p>
+          I know we're not together right now, but we have a lot more anniversaries that 
+          we will spend together to make up for it. I can't wait to spend the rest of our lives 
+          eating lots of yummy foods, traveling the world, watching silly K dramas, and buying a lot of blind boxes together.
+          Thank you for making my world so complete and my heart so full.
+        </p>
+      </div>
+
+      <!-- !! CHANGE THE CLOSING & SIGNATURE !! -->
+      <p class="letter-closing">From,</p>
+      <p class="letter-signature">Ethan</p>
+
+      <!-- !! REPLACE src WITH YOUR GIF PATH !! -->
+      <div class="inline-gif">
+        <img src="peachgoma.gif" alt="Our memory" />
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="footer-heart">♥</span>
+  <p>Happy 1st Anniversary</p>
+</div>
+
+<!-- ════════════════════════════════════════════
+     AUDIO (hidden)
+     !! REPLACE src WITH YOUR MUSIC FILE PATH !!
+     Example: src="song.mp3"
+     ════════════════════════════════════════════ -->
+<audio id="bg-music" loop>
+  <source src="Sweet.mp3" type="audio/mpeg" />
+</audio>
+
+<!-- Music Toggle Button -->
+<button class="music-toggle" id="music-btn" onclick="toggleMusic()" title="Toggle Music">
+  🎵
+</button>
+
+<!-- ════════════════════════════════════════════
+     JAVASCRIPT
+     ════════════════════════════════════════════ -->
+<script>
+  // ─── PARTICLES ───
+  (function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (8 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+      container.appendChild(p);
+    }
+  })();
+
+  // ─── SCROLL TO LETTER ───
+  function scrollToLetter() {
+    document.getElementById('letter-section').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ─── SCROLL REVEAL ───
+  const revealElements = document.querySelectorAll(
+    '.section-label, .letter-heading, .letter-card, .gif-frame'
+  );
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // stagger gif frames slightly
+        const delay = entry.target.classList.contains('gif-frame') ? 100 : 0;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealElements.forEach(el => observer.observe(el));
+
+  // ─── MUSIC TOGGLE ───
+  const audio = document.getElementById('bg-music');
+  const musicBtn = document.getElementById('music-btn');
+  let isPlaying = false;
+
+  function toggleMusic() {
+    if (isPlaying) {
+      audio.pause();
+      musicBtn.textContent = '🎵';
+      musicBtn.classList.remove('playing');
+    } else {
+      audio.play().catch(() => {});
+      musicBtn.textContent = '🎶';
+      musicBtn.classList.add('playing');
+    }
+    isPlaying = !isPlaying;
+  }
+
+  // Try to autoplay on first user interaction (scroll or click anywhere)
+  function tryAutoplay() {
+    if (!isPlaying) {
+      audio.play().then(() => {
+        isPlaying = true;
+        musicBtn.textContent = '🎶';
+        musicBtn.classList.add('playing');
+      }).catch(() => {});
+    }
+    document.removeEventListener('click', tryAutoplay);
+    document.removeEventListener('scroll', tryAutoplay);
+  }
+  document.addEventListener('click', tryAutoplay);
+  document.addEventListener('scroll', tryAutoplay);
+</script>
+
+</body>
+</html>
